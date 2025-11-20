@@ -66,7 +66,7 @@
                 return result;
             }, []).join(',');
 
-            var url = "http://127.0.0.1:8000/DragnDrop/simpan?x=" + encodeURIComponent(posisi);
+            var url = "{{ url('DragnDrop/simpan') }}?x=" + encodeURIComponent(posisi);
             window.open(url, '_self');
         }
 
@@ -85,7 +85,7 @@
                 return result;
             }, []).join(',');
 
-            var url = "http://127.0.0.1:8000/dragndropcart?x=" + encodeURIComponent(posisi);
+            var url = "{{ url('dragndropcart') }}?x=" + encodeURIComponent(posisi);
             window.open(url, '_self');
         }
 
