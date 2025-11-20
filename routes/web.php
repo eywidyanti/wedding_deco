@@ -102,7 +102,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
      //dekor
     Route::resource('dekor', DekorController::class);
     Route::get('/dekor/{dekor:slug}/edit', [DekorController::class, 'edit'])->name('dekor.edit');
-    Route::get('/dekor/{dekor:slug}/show', [DekorController::class, 'show'])->name('dekor.show');
+    Route::get('/dekor/{dekor:slug}/show', [DekorController::class, 'show'])->name('dekor.show.slug');
 
     //paket
     Route::resource('paket', PaketController::class);
@@ -110,12 +110,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/DragnDropAdmin/simpanDragnDrop', [PaketController::class, 'simpanDragnDrop']);
     Route::get('/dragndroppaket', [PaketController::class, 'paket_drag_n_drop'])->name('dragndroppaket');
     Route::get('/paket/{paket:slug}/edit', [PaketController::class, 'edit'])->name('paket.edit');
-    Route::get('/paket/{paket:slug}/show', [PaketController::class, 'show'])->name('paket.show');
+    Route::get('/paket/{paket:slug}/show', [PaketController::class, 'show'])->name('paket.show.slug');
 
     //galeri
     Route::resource('galeri', GaleriController::class);
     Route::get('/galeri/{galeri:slug}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
-    Route::get('/galeri/{galeri:slug}/show', [GaleriController::class, 'show'])->name('galeri.show');
+    Route::get('/galeri/{galeri:slug}/show', [GaleriController::class, 'show'])->name('galeri.show.slug');
 
     Route::resource('user', UserController::class);
     // Route::get('/user/{user:slug}/edit', [UserController::class, 'edit'])->name('user.edit');
