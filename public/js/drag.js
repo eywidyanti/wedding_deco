@@ -1,39 +1,4 @@
-// Part 1: Drag & drop files
-document.addEventListener("DOMContentLoaded", event => {
-    const fileDropzone = document.getElementById("file-dropzone");
-    const output = document.getElementById("output");
-
-    if (window.FileList && window.File) {
-        fileDropzone.addEventListener("dragover", event => {
-            event.stopPropagation();
-            event.preventDefault();
-            event.dataTransfer.dropEffect = "copy";
-            fileDropzone.classList.add("dragover");
-        });
-
-        fileDropzone.addEventListener("dragleave", event => {
-            fileDropzone.classList.remove("dragover");
-        });
-
-        fileDropzone.addEventListener("drop", event => {
-            fileDropzone.classList.remove("dragover");
-            event.stopPropagation();
-            event.preventDefault();
-
-            for (const file of event.dataTransfer.files) {
-                const name = file.name;
-                const size = file.size ? Math.round(file.size / 1000) : 0;
-
-                if (file.type && file.type.startsWith("image/")) {
-                    const li = document.createElement("li");
-                    li.textContent = name + " (" + size + " KB)";
-                    output.appendChild(li);
-                }
-            }
-        });
-    }
-});
-
+// === Fungsi pergerakan drag ===
 function dragMoveListener(event) {
     var target = event.target;
     var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
@@ -44,6 +9,7 @@ function dragMoveListener(event) {
     target.setAttribute('data-y', y);
 }
 
+// === Dropzone Handler ===
 function onDragEnter(event) {
     var draggableElement = event.relatedTarget;
     var dropzoneElement = event.target;
@@ -54,25 +20,25 @@ function onDragEnter(event) {
 function onDragLeave(event) {
     event.target.classList.remove("drop-target");
     event.relatedTarget.classList.remove("can-drop");
-    console.log('keluar');
+
     const index = itemDrop.indexOf(event.relatedTarget.id);
-    itemDrop.splice(index, 1);
-    console.log(itemDrop);
+    if (index !== -1) itemDrop.splice(index, 1);
 }
 
 function onDrop(event) {
     event.target.classList.remove("drop-target");
-    console.log('masuk');
     if (!itemDrop.includes(event.relatedTarget.id)) {
         itemDrop.push(event.relatedTarget.id);
     }
-    console.log(itemDrop);
 }
 
-document.addEventListener("DOMContentLoaded", event => {
-    window.dragMoveListener = dragMoveListener;
+// === Reset dan Re-inisialisasi Interact.js ===
+function resetInteract() {
+    // Bersihkan interaksi lama
+    interact('.draggable').unset();
 
-    interact("#dropzone").dropzone({
+    // Dropzone utama
+    interact('#dropzone').dropzone({
         accept: ".itemA",
         overlap: 0.75,
         ondragenter: onDragEnter,
@@ -80,23 +46,8 @@ document.addEventListener("DOMContentLoaded", event => {
         ondrop: onDrop
     });
 
-    interact("#dropzoneA").dropzone({
-        accept: ".itemA",
-        overlap: 0.75,
-        ondragenter: onDragEnter,
-        ondragleave: onDragLeave,
-        ondrop: onDrop
-    });
-
-    interact("#dropzoneB").dropzone({
-        accept: ".itemB",
-        overlap: 0.75,
-        ondragenter: onDragEnter,
-        ondragleave: onDragLeave,
-        ondrop: onDrop
-    });
-
-    interact(".draggable").draggable({
+    // Aktifkan drag untuk semua item
+    interact('.draggable').draggable({
         inertia: true,
         autoScroll: true,
         modifiers: [
@@ -105,8 +56,11 @@ document.addEventListener("DOMContentLoaded", event => {
                 endOnly: true
             })
         ],
-        listeners: {
-            move: dragMoveListener
-        }
+        listeners: { move: dragMoveListener }
     });
-});
+
+    console.log("Interact.js sudah direset dan aktif kembali.");
+}
+
+// Jalankan pertama kali halaman dibuka
+document.addEventListener("DOMContentLoaded", resetInteract);
