@@ -493,15 +493,17 @@ html {
     border-radius: 5px;
     background-color: #f9f9f9;
     display: block;
-    width: fit-content;
+    width: 100%;               /* biar muat lebar card */
     margin: 0 auto;
-    max-height: 4.5rem; /* Batasi tinggi maksimal */
-    overflow: hidden; /* Sembunyikan teks yang melampaui batas */
-    text-overflow: ellipsis; /* Tambahkan elipsis (...) di akhir teks */
-    white-space: nowrap; /* Pastikan teks tidak terbungkus */
-    cursor: pointer; /* Ubah kursor saat mengarahkan ke teks */
-    transition: max-height 0.3s ease; /* Animasi transisi untuk perubahan tinggi */
+    max-height: 4.5rem;        /* batasi tinggi maksimal */
+    overflow: hidden;          /* sembunyikan teks lebih */
+    text-overflow: ellipsis;   /* tampilkan ... di akhir */
+    white-space: normal;       /* ⬅️ ubah dari nowrap ke normal agar teks bisa turun baris */
+    word-wrap: break-word;     /* pastikan kata panjang ikut dipotong */
+    cursor: pointer;
+    transition: max-height 0.3s ease;
 }
+
 
 .produk .produk-content p.expanded {
     max-height: none; /* Hilangkan batas tinggi saat diperluas */

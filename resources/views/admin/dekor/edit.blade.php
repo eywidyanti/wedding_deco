@@ -37,6 +37,33 @@
                             placeholder="Masukkan Nama Dekorasi">
                     </div>
                     <div class="input-box">
+                        <span class="details">Kategori</span>
+                        <select name="kategori_id" required>
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($kategoriDekor as $kategori)
+                                <option value="{{ $kategori->id }}"
+                                    {{ $dekor->kategori_id == $kategori->id ? 'selected' : '' }}>
+                                    {{ $kategori->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Tema</span>
+                        <input type="text" name="tema" value="{{ old('tema', $dekor->tema) }}"
+                            placeholder="Masukkan Tema Dekorasi">
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Gaya</span>
+                        <input type="text" name="gaya" value="{{ old('gaya', $dekor->gaya) }}"
+                            placeholder="Masukkan Gaya Dekorasi">
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Warna</span>
+                        <input type="text" name="warna" value="{{ old('warna', $dekor->warna) }}"
+                            placeholder="Masukkan Warna Dekorasi">
+                    </div>
+                    <div class="input-box">
                         <span class=details> Harga </span>
                         <input type="text" name="harga" value="{{ $dekor->harga }}" placeholder="Masukkan Harga">
                     </div>

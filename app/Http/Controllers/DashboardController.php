@@ -29,29 +29,48 @@ class DashboardController extends Controller
         return view('welcome', compact('dekors', 'pakets', 'cartItems', 'galeris', 'dekorsFromPaketDekor'));
     }
 
+    // public function DragnDrop()
+    // {
+    //     $user = Auth::user();
+    //     $user_id = $user->id;
+
+    //     $position = Position::where('user_id', $user_id)->get();
+
+    //     if ($position->isEmpty()) {
+    //         $paketDekors = PaketDekor::all();
+
+    //         $dekorIds = $paketDekors->pluck('dekor_id')->unique();
+
+    //         $dekors = Dekor::whereIn('id', $dekorIds)->get();
+    //         return view('klien.DragnDrop', compact('dekors', 'position'));
+    //     } else {
+    //         $maxId = $position->sortByDesc('id')->first();
+    //         $pecah = explode('},{', $maxId->x);
+
+    //         $paketDekors = PaketDekor::all();
+
+    //         $dekorIds = $paketDekors->pluck('dekor_id')->unique();
+
+    //         $dekors = Dekor::whereIn('id', $dekorIds)->get();
+
+    //         return view('klien.DragnDrop', compact('dekors', 'pecah', 'position'));
+    //     }
+    // }
+    
     public function DragnDrop()
     {
         $user = Auth::user();
         $user_id = $user->id;
 
+        $dekors = Dekor::whereDoesntHave('paketDekors')->get();
+
         $position = Position::where('user_id', $user_id)->get();
 
         if ($position->isEmpty()) {
-            $paketDekors = PaketDekor::all();
-
-            $dekorIds = $paketDekors->pluck('dekor_id')->unique();
-
-            $dekors = Dekor::whereIn('id', $dekorIds)->get();
             return view('klien.DragnDrop', compact('dekors', 'position'));
         } else {
             $maxId = $position->sortByDesc('id')->first();
             $pecah = explode('},{', $maxId->x);
-
-            $paketDekors = PaketDekor::all();
-
-            $dekorIds = $paketDekors->pluck('dekor_id')->unique();
-
-            $dekors = Dekor::whereIn('id', $dekorIds)->get();
 
             return view('klien.DragnDrop', compact('dekors', 'pecah', 'position'));
         }

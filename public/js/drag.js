@@ -7,7 +7,37 @@ function dragMoveListener(event) {
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
+
+    updateKeterangan();
 }
+
+function dragEndListener(event) {
+    const id = event.target.id;
+
+    // Kalau elemen berada di dalam dropzone, masukkan ke itemDrop
+    const dropzone = document.getElementById("dropzone");
+    const dropRect = dropzone.getBoundingClientRect();
+    const elRect = event.target.getBoundingClientRect();
+
+    const inside =
+        elRect.left >= dropRect.left &&
+        elRect.right <= dropRect.right &&
+        elRect.top >= dropRect.top &&
+        elRect.bottom <= dropRect.bottom;
+
+    if (inside) {
+        if (!itemDrop.includes(id)) {
+            itemDrop.push(id);
+        }
+    } else {
+        // kalau keluar area drop langsung hapus
+        const index = itemDrop.indexOf(id);
+        if (index !== -1) itemDrop.splice(index, 1);
+    }
+
+    updateKeterangan();
+}
+
 
 // === Dropzone Handler ===
 function onDragEnter(event) {
@@ -56,7 +86,9 @@ function resetInteract() {
                 endOnly: true
             })
         ],
-        listeners: { move: dragMoveListener }
+        listeners: { 
+            move: dragMoveListener,
+            end: dragEndListener }
     });
 
     console.log("Interact.js sudah direset dan aktif kembali.");

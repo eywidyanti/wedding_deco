@@ -47,7 +47,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     
     //cart
     Route::get('/paket/{slug}/detail', [HomeController::class, 'detail'])->name('detail');
-    Route::get('add-to-cart/{dekor:id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+    Route::get('add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add.to.cart');
     Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
     Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 
@@ -101,8 +101,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
      //dekor
     Route::resource('dekor', DekorController::class);
-    Route::get('/dekor/{dekor:slug}/edit', [DekorController::class, 'edit'])->name('dekor.edit');
-    Route::get('/dekor/{dekor:slug}/show', [DekorController::class, 'show'])->name('dekor.show.slug');
+    // Route::get('/dekor/{dekor:slug}/edit', [DekorController::class, 'edit'])->name('dekor.edit');
+    // Route::get('/dekor/{dekor:slug}/show', [DekorController::class, 'show'])->name('dekor.show.slug');
 
     //paket
     Route::resource('paket', PaketController::class);

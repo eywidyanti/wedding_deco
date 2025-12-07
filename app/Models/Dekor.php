@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dekor extends Model
 {
-    protected $table= 'dekor';
-    protected $fillable = ['user_id','nama', 'slug', 'gambar', 'harga', 'deskripsi'];
+    protected $table = 'dekor';
+    protected $fillable = ['user_id', 'kategori_id', 'nama', 'slug', 'gambar', 'harga', 'deskripsi', 'tema', 'gaya', 'warna'];
 
     public function user()
     {
@@ -30,4 +30,13 @@ class Dekor extends Model
         return $this->hasMany(PaketDekor::class);
     }
 
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriDekor::class, 'kategori_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

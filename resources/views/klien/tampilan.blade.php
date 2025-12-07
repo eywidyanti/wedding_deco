@@ -96,14 +96,32 @@
             </button></a>
             
         <div class="row">
-            @if ($dekorsFromPaketDekor->isEmpty())
+            @if ($dekorsFromPaketDekor->isEmpty() && $dekors->isEmpty())
                 <p>Tidak ada dekorasi tersedia pada tanggal ini.</p>
+            @elseif ($dekors->isNotEmpty())
+                @foreach ($dekors as $dekorasi)
+                    <div class="produk-card">
+                        <div class="produk-icons">
+                            <a href="{{ route('add.to.cart', $dekorasi->slug) }}"><i
+                                    data-feather="shopping-cart"></i></a>
+                        </div>
+                        <div class="produk-image">
+                            <img src="img/admin/gambardekor/{{ $dekorasi->gambar }}" alt="{{ $dekorasi->nama }}">
+                        </div>
+                        <div class="produk-content">
+                            <h3>{{ $dekorasi->nama }}</h3>
+                            <div class="produk-price">{{ formatRupiah($dekorasi->harga) }}</div>
+                            <h4>Deskripsi</h4>
+                            <p>{{ $dekorasi->deskripsi }}</p>
+                        </div>
+                    </div>
+                @endforeach
             @else
                 @foreach ($dekorsFromPaketDekor as $dekor)
                     <div class="produk-card">
                         <div class="produk-icons">
-                            <a href="{{ route('add.to.cart', $dekor->id) }}"><i data-feather="shopping-cart"></i></a>
-                            </div>
+                            <a href="{{ route('add.to.cart', $dekor->slug) }}"><i data-feather="shopping-cart"></i></a>
+                        </div>
                         <div class="produk-image">
                             <img src="img/admin/gambardekor/{{ $dekor->gambar }}" alt="{{ $dekor->nama }}">
                         </div>
@@ -207,11 +225,12 @@
                 <a href="#"><i class="fa fa-linkedin"></i></a>
                 <a href="#"><i class="fa fa-youtube"></i></a>
             </div>
-            <span style="color: white;">Polinema Psdku Pamekasan</span>
+            <span style="color: white;">Politeknik Negeri Malang</span>
             <img src="img/logop.png" style="width: 15%;">
         </div>
     </footer>
     <!-- Footer -->
 
     <!-- Modal box item detail -->
+    
 @endsection

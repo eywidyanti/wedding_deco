@@ -13,16 +13,32 @@
 <body>
     <h1>Drag & Drop</h1>
 
-    <div id="dropzone" class="dropzone">Drop Zone</div>
-    <button onclick="coba()">Simpan</button>
-    <button onclick="cobacart()">Cart</button>
+
+    <div class="main-layout">
+    <div class="left-panel">
+        <div id="dropzone" class="dropzone">Drop Zone</div>
+        <div class="button-group">
+            <button onclick="coba()">Simpan</button>
+            <button onclick="cobacart()">Cart</button>
+        </div>
+    </div>
+
+    <div id="panel-keterangan" class="right-panel">
+        <h3>Keterangan</h3>
+        <div id="list-keterangan">
+            <p>Belum ada item.</p>
+        </div>
+    </div>
+</div>
+
 
     <hr>
 
     {{-- === Elemen Dekorasi === --}}
     @foreach ($dekors as $dekor)
-        <div class="draggable itemA large-background" id="dekor-{{ $dekor->id }}">
+        <div class="draggable itemA large-background" id="dekor-{{ $dekor->id }}" data-deskripsi="{{ $dekor->deskripsi }}">
             <img src="img/admin/gambarDekor/{{ $dekor->gambar }}" alt="Image A">
+            <div class="nama-item">{{ $dekor->nama }}</div>
         </div>
     @endforeach
 
@@ -58,6 +74,40 @@
 
     <script>
         let itemDrop = [];
+
+        function updateKeterangan() {
+            const container = document.getElementById("list-keterangan");
+
+            if (itemDrop.length === 0) {
+                container.innerHTML = "<p>Belum ada item.</p>";
+                return;
+            }
+
+            let html = "<ul>";
+
+            itemDrop.forEach(id => {
+                const el = document.getElementById(id);
+                const name = el.querySelector(".nama-item").innerText;
+                const deskripsi = el.getAttribute("data-deskripsi") || "-";
+                // const x = el.getAttribute("data-x") || 0;
+                // const y = el.getAttribute("data-y") || 0;
+
+                html += `
+            <li style="margin-bottom: 8px;">
+                <strong>${name}</strong><br>
+                <span>${deskripsi}</span><br>
+                
+            </li>
+        `;
+            });
+
+            // ID: ${id}<br>
+            //     Posisi: (X: ${x}, Y: ${y})
+
+            html += "</ul>";
+            container.innerHTML = html;
+        }
+
 
         function coba() {
             const elemen = itemDrop.map(id => {

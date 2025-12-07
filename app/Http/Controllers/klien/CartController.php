@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function addToCart($id)
+    public function addToCart($slug)
     {
         $user = Auth::user();
         $user_id = $user->id;
-        $paket = Paket::where('id', $id)->first();
+        $paket = Paket::where('slug', $slug)->first();
 
         if ($paket) {
             $PaketDiCart = Cart::where('user_id', $user_id)->whereNotNull('paket_id')->exists();
@@ -40,7 +40,7 @@ class CartController extends Controller
                     }
             }
         } else {
-            $dekor = Dekor::where('id', $id)->firstOrFail();
+            $dekor = Dekor::where('slug', $slug)->firstOrFail();
             $cartItem = Cart::where('dekor_id', $dekor->id)->where('user_id', $user_id)->first();
             $PaketDiCart = Cart::where('user_id', $user_id)->whereNotNull('paket_id')->exists();
 

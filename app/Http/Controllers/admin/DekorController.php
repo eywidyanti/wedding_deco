@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dekor;
+use App\Models\KategoriDekor;
 use App\Models\Paket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class DekorController extends Controller
     public function create()
     {
         $pakets = Paket::all();
-        return view('admin.dekor.create', compact('pakets'));
+        $kategoriDekor = KategoriDekor::all();
+        return view('admin.dekor.create', compact('pakets', 'kategoriDekor'));
     }
 
     /**
@@ -40,9 +42,14 @@ class DekorController extends Controller
 
         $request->validate([
             'nama' => 'required',
+            'kategori_id' => 'required|exists:kategori_dekor,id',
+            'tema' => 'nullable|string',
+            'gaya' => 'nullable|string',
+            'warna' => 'nullable|string',
             'gambar' => 'required||mimes:jpeg,png,jpg,gif,svg|max:5048',
             'harga' => 'required',
             'deskripsi' => 'required',
+            'ga'
         ]);
 
         $data = $request->all();
@@ -79,7 +86,8 @@ class DekorController extends Controller
     public function edit(Dekor $dekor)
     {
         $pakets = Paket::all();
-        return view('admin.dekor.edit', compact('dekor', 'pakets'));
+        $kategoriDekor = KategoriDekor::all();
+        return view('admin.dekor.edit', compact('dekor', 'pakets', 'kategoriDekor'));
     }
 
     /**
@@ -92,6 +100,10 @@ class DekorController extends Controller
 
         $request->validate([
             'nama' => 'required',
+            'kategori_id' => 'required|exists:kategori_dekor,id',
+            'tema' => 'nullable|string',
+            'gaya' => 'nullable|string',
+            'warna' => 'nullable|string',
             'gambar' => 'nullable||mimes:jpeg,png,jpg,gif,svg|max:5048',
             'harga' => 'required',
             'deskripsi' => 'required',

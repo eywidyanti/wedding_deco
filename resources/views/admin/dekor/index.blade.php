@@ -25,7 +25,11 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>User</th>
+                    {{-- <th>User</th> --}}
+                    <th>Kategori</th>
+                    {{-- <th>Gaya</th>
+                    <th>Tema</th>
+                    <th>Warna</th> --}}
                     <th>Nama</th>
                     <th>Gambar</th>
                     <th>Harga</th>
@@ -37,7 +41,11 @@
                 @foreach ($dekors as $dekor)
                     <tr>
                         <td>{{ ++$i }}</td>
-                        <td>{{ $dekor->user->name }}</td>
+                        {{-- <td>{{ $dekor->user->name }}</td> --}}
+                        <td>{{ $dekor->kategori->nama_kategori ?? '-'}}</td>
+                        {{-- <td>{{ $dekor->gaya }}</td>
+                        <td>{{ $dekor->tema }}</td>
+                        <td>{{ $dekor->warna }}</td> --}}
                         <td>{{ $dekor->nama }}</td>
                         <td><img src="img/admin/gambarDekor/{{ $dekor->gambar }}" width="100px"></td>
                         <td>{{ $dekor->harga }}</td>
