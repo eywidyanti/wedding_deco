@@ -57,9 +57,69 @@ function onDragLeave(event) {
 
 function onDrop(event) {
     event.target.classList.remove("drop-target");
-    if (!itemDrop.includes(event.relatedTarget.id)) {
-        itemDrop.push(event.relatedTarget.id);
+    const droppedId = event.relatedTarget.id;
+
+    // Tambahkan ke daftar drop jika belum ada
+    if (!itemDrop.includes(droppedId)) {
+        itemDrop.push(droppedId);
     }
+
+    const el = document.getElementById(droppedId);
+    const deskripsi = el.getAttribute("data-deskripsi");
+    console.log("Item dijatuhkan ke Drop Zone:", deskripsi);
+}
+
+
+function lihatRekomendasi() {
+    if (itemDrop.length === 0) {
+        alert("Silakan drag minimal 1 item terlebih dahulu!");
+        return;
+    }
+
+    // Gabungkan deskripsi semua item yang di-drop
+    const deskripsiGabung = itemDrop.map(id => {
+        const el = document.getElementById(id);
+        return el.getAttribute("data-deskripsi") || "";
+    }).join(" ");
+
+    console.log("Deskripsi dikirim:", deskripsiGabung);
+
+    // Kirim deskripsi ke backend untuk mendapatkan rekomendasi
+    fetch("/rekomendasi/drag", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ description: deskripsiGabung })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Hasil rekomendasi:", data);
+        tampilkanRekomendasi(data); // tampilkan hasilnya
+    })
+    .catch(err => console.error("Error:", err));
+}
+
+function tampilkanRekomendasi(list) {
+    const panel = document.getElementById("list-keterangan");
+    if (!panel) return;
+
+    let html = "<hr><h4>Rekomendasi Dekorasi Mirip</h4><ul>";
+
+    if (Array.isArray(list) && list.length > 0) {
+        list.forEach(item => {
+            html += `
+                <li>${item.description}<br>
+                    <small>Kemiripan: ${item.similarity.toFixed(3)}</small>
+                </li>`;
+        });
+    } else {
+        html += "<li>Tidak ditemukan dekorasi mirip.</li>";
+    }
+
+    html += "</ul>";
+    panel.innerHTML = html; // ganti konten lama
 }
 
 // === Reset dan Re-inisialisasi Interact.js ===
@@ -94,5 +154,44 @@ function resetInteract() {
     console.log("Interact.js sudah direset dan aktif kembali.");
 }
 
-// Jalankan pertama kali halaman dibuka
-document.addEventListener("DOMContentLoaded", resetInteract);
+document.addEventListener("DOMContentLoaded", function () {
+    resetInteract();
+    restoreDropItems();
+});
+
+// === Fungsi untuk memulihkan item yang berada di dalam dropzone ===
+function restoreDropItems() {
+    const dropzone = document.getElementById("dropzone");
+    if (!dropzone) return;
+
+    const dropRect = dropzone.getBoundingClientRect();
+    const draggableItems = document.querySelectorAll(".draggable");
+
+    draggableItems.forEach(el => {
+        const elRect = el.getBoundingClientRect();
+
+        // ambil posisi yang sudah diset dari database (data-x dan data-y)
+        const x = parseFloat(el.getAttribute("data-x")) || 0;
+        const y = parseFloat(el.getAttribute("data-y")) || 0;
+
+        // jika transform dari DB belum diterapkan, tetap set dulu
+        el.style.transform = `translate(${x}px, ${y}px)`;
+
+        // hitung posisi real di layar setelah translate
+        const inside =
+            elRect.left + x >= dropRect.left &&
+            elRect.right + x <= dropRect.right &&
+            elRect.top + y >= dropRect.top &&
+            elRect.bottom + y <= dropRect.bottom;
+
+        if (inside) {
+            // tambahkan ke itemDrop
+            if (!itemDrop.includes(el.id)) {
+                itemDrop.push(el.id);
+            }
+        }
+    });
+
+    updateKeterangan(); // tampilkan kembali daftar item yang sudah drop
+    console.log("Item drop berhasil dipulihkan:", itemDrop);
+}

@@ -1,5 +1,7 @@
 body {
     margin: 30px;
+    padding-top: 80px; /* ✅ supaya konten tidak tertimpa navbar */
+    font-family: "Roboto", sans-serif;
 }
 
 * {
@@ -43,7 +45,7 @@ h1 {
 #dropzone {
     width: 650px;
     height: 500px;
-    background-color: #5d571e;
+    background-color: #827825;
     border: 2px solid #ffffff;
     border-radius: 10px;
     color: #000;
@@ -58,32 +60,44 @@ h1 {
     transform: scale(0.95);
 }
 
-/* Tombol simpan & cart di bawah drop zone */
+/* Gaya tombol */
 .button-group {
     display: flex;
-    gap: 15px;
-    margin-top: 10px;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
 }
 
-/* Gaya tombol */
+/* grup tombol kanan */
+.right-buttons {
+    display: flex;
+    gap: 10px; 
+}
+
+/* gaya umum tombol */
 .button-group button {
-    background-color: #67d967;
-    border: 3px solid #fff;
-    padding: 6px 14px;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background-color: #22e06b;
     font-weight: bold;
     font-family: "Courier New", Courier, monospace;
     font-size: 1rem;
-    border-radius: 10px;
     cursor: pointer;
+    transition: 0.2s ease;
 }
+
+/* efek hover */
+.button-group button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
 
 /* Panel kanan (keterangan) */
 .right-panel {
     flex: 1;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
 }
 
 /* Part 3: InteractJS area */
@@ -110,10 +124,16 @@ h1 {
 }
 
 .draggable img {
-    height: 100%;
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* gambar tetap proporsional */
     border-radius: 10px;
+    display: block;
+    margin: 0 auto;
 }
+
 
 /* Ukuran tambahan item */
 .itemA {

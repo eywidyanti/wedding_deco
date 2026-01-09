@@ -12,6 +12,8 @@ use App\Http\Controllers\klien\BookingController;
 use App\Http\Controllers\klien\CartController;
 use App\Http\Controllers\klien\PaymentController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\Rekomendasi\CBFController;
+use App\Http\Controllers\Rekomendasi\VisualController;
 use App\Models\Cart;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,7 @@ Route::get('/', [DashboardController::class, 'welcome']);
 Route::get('/paket/{slug}/detailwc', [DashboardController::class, 'detailwc'])->name('detailwc');
 
 Auth::routes();
+
 
 Route::middleware(['auth', 'user-access:user'])->group(function () {
   
@@ -79,6 +82,22 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     Route::post('/cetakKwitansi', [DashboardController::class, 'kwitansi'])->name('cetakKwitansi');
     Route::post('/cetakBayar', [DashboardController::class, 'cetak'])->name('cetakBayar');
+
+//rekomendasi
+    Route::get('/rekomendasi', [CBFController::class, 'index'])->name('rekomendasi');
+    Route::post('/rekomendasi/drag', [CBFController::class, 'fromDrag'])->name('rekomendasi.drag');
+
+    Route::get('/draganddrop', [VisualController::class, 'dragPage'])->name('drag.page');
+Route::post('/visual/generate', [VisualController::class, 'generate'])->name('visual.generate');
+
+   //oute::post('/rekomendasi/generate-image', [CBFController::class, 'generateImage'])->name('rekomendasi.generateImage');
+
+// Route::get('/gemini', [VisualController::class, 'index'])->name('gemini.index');
+// Route::post('/gemini/generate', [VisualController::class, 'generate'])->name('gemini.generate');
+
+
+//     Route::get('/decoration', [VisualController::class, 'index'])->name('visualize.index');
+// Route::post('/visualize-process', [VisualController::class, 'visualize'])->name('visualize.process');
 
     // Route::post('/booking.success.ya', [PaymentController::class, 'bookingSuccess'])->name('booking.success');
     
